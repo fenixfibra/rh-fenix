@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 rx=%2714%27 fill=%27%234B148C%27/%3E%3Crect x=%2716%27 y=%2716%27 width=%2732%27 height=%2732%27 rx=%274%27 fill=%27%23FEF363%27/%3E%3C/svg%3E">
 <title>Fênix Fibra — Fala que te escuto</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -83,7 +85,8 @@ body { font-family:"Inter",sans-serif; background:#1A1030; color:#fff; display:f
 
     <!-- Compose -->
     <div class="s14-compose">
-      <textarea id="s14-text" class="s14-textarea" rows="3" placeholder="O que você quer compartilhar? Sugestão, ideia, crítica construtiva… escreve aí 💛"></textarea>
+      <input type="checkbox" id="s14-botcheck" name="botcheck" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true">
+<textarea id="s14-text" class="s14-textarea" rows="3" placeholder="O que você quer compartilhar? Sugestão, ideia, crítica construtiva… escreve aí 💛"></textarea>
       <div class="s14-color-row" id="s14-colors">
         <div class="s14-color-btn active" data-color="#FEF363" style="background:#FEF363" title="Amarelo"></div>
         <div class="s14-color-btn" data-color="#FFB3B3" style="background:#FFB3B3" title="Rosa"></div>
@@ -144,6 +147,10 @@ function postarPostit() {
 
   if (!ta || !board) return;
 
+// Anti-spam: robôs costumam marcar o campo escondido
+var bot = document.getElementById('s14-botcheck');
+if (bot && bot.checked) return;
+
   var txt = ta.value.trim();
   if (!txt) {
     ta.focus();
@@ -185,7 +192,8 @@ function postarPostit() {
       subject: '[Mural Fênix] Post-it anônimo — ' + now.toLocaleString('pt-BR'),
       message: savedTxt,
       from_name: 'Mural Anônimo — Fênix Fibra',
-      replyto: 'noreply@fenixfibra.com.br'
+      replyto: 'noreply@fenixfibra.com.br',
+botcheck: false
     })
   })
   .then(function(r){ return r.json(); })
